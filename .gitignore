@@ -34,3 +34,4 @@ pip-log.txt
 #LiClips
 .project
 .pydevproject
+example/Pipfile.lock
