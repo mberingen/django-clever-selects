@@ -8,11 +8,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import EMPTY_VALUES
 from django.db import models
 from django.http.request import HttpRequest
-from django.urls import resolve
 from django.utils.encoding import force_text, smart_str
 
 from .form_fields import (ChainedChoiceField, ChainedModelChoiceField,
                           ChainedModelMultipleChoiceField)
+
+try:
+    from django.urls import reverse, resolve
+except:
+    from django.core.urlresolvers import reverse, resolve
+
+
 
 
 class ChainedChoicesMixin(object):
@@ -27,8 +33,11 @@ class ChainedChoicesMixin(object):
     chained_model_fields_names = []
 
     def init_chained_choices(self, *args, **kwargs):
-        self.chained_fields_names = self.get_fields_names_by_type(ChainedChoiceField)
-        self.chained_model_fields_names = self.get_fields_names_by_type(ChainedModelChoiceField) + self.get_fields_names_by_type(ChainedModelMultipleChoiceField)
+        self.chained_fields_names = self.get_fields_names_by_type(
+            ChainedChoiceField)
+        self.chained_model_fields_names = self.get_fields_names_by_type(
+            ChainedModelChoiceField) + self.get_fields_names_by_type(
+                ChainedModelMultipleChoiceField)
         self.user = kwargs.get('user', self.user)
 
         if kwargs.get('data', None) is not None:
@@ -38,15 +47,19 @@ class ChainedChoicesMixin(object):
             self.set_choices_via_ajax(args[0])
 
         elif kwargs.get('instance', None) is not None:
-            oldest_parent_field_names = list(set(self.get_oldest_parent_field_names()))
-            youngest_child_names = list(set(self.get_youngest_children_field_names()))
+            oldest_parent_field_names = list(
+                set(self.get_oldest_parent_field_names()))
+            youngest_child_names = list(
+                set(self.get_youngest_children_field_names()))
 
             for youngest_child_name in youngest_child_names:
-                self.find_instance_attr(kwargs['instance'], youngest_child_name)
+                self.find_instance_attr(kwargs['instance'],
+                                        youngest_child_name)
 
             for oldest_parent_field_name in oldest_parent_field_names:
                 try:
-                    self.fields[oldest_parent_field_name].initial = getattr(self, '%s' % oldest_parent_field_name)
+                    self.fields[oldest_parent_field_name].initial = getattr(
+                        self, '%s' % oldest_parent_field_name)
                 except AttributeError:
                     pass
 
@@ -70,14 +83,17 @@ class ChainedChoicesMixin(object):
                         parent_value = kwargs.get(field.parent_field, None)
                         field_value = kwargs.get(field_name, None)
                     else:
-                        parent_value = kwargs.get('%s-%s' % (self.prefix, field.parent_field), None)
-                        field_value = kwargs.get('%s-%s' % (self.prefix, field_name), None)
+                        parent_value = kwargs.get(
+                            '%s-%s' % (self.prefix, field.parent_field), None)
+                        field_value = kwargs.get('%s-%s' % (self.prefix,
+                                                            field_name), None)
                 else:
                     parent_value = self.initial.get(field.parent_field, None)
                     field_value = self.initial.get(field_name, None)
 
                     if parent_value is None:
-                        parent_value = getattr(self, '%s' % field.parent_field, None)
+                        parent_value = getattr(self, '%s' % field.parent_field,
+                                               None)
 
                     if field_value is None:
                         field_value = getattr(self, '%s' % field_name, None)
@@ -120,12 +136,12 @@ class ChainedChoicesMixin(object):
                     # Apply the data (if it's returned)
                     if smart_str(response.content):
                         try:
-                            field.choices += json.loads(smart_str(response.content))
+                            field.choices += json.loads(
+                                smart_str(response.content))
                         except ValueError:
-                            raise ValueError('Data returned from request (url={url}, params={params}) could not be deserialized to Python object'.format(
-                                url=url,
-                                params=params
-                            ))
+                            raise ValueError(
+                                'Data returned from request (url={url}, params={params}) could not be deserialized to Python object'.
+                                format(url=url, params=params))
 
                 field.initial = field_value
 
@@ -159,13 +175,17 @@ class ChainedChoicesMixin(object):
         return result
 
     def get_chained_fields_names(self):
-        chained_fields_names = self.get_fields_names_by_type(ChainedChoiceField)
-        chained_model_fields_names = self.get_fields_names_by_type(ChainedModelChoiceField)
+        chained_fields_names = self.get_fields_names_by_type(
+            ChainedChoiceField)
+        chained_model_fields_names = self.get_fields_names_by_type(
+            ChainedModelChoiceField)
         return chained_fields_names + chained_model_fields_names
 
     def get_oldest_parent_field_names(self):
-        chained_fields_names = self.get_fields_names_by_type(ChainedChoiceField)
-        chained_model_fields_names = self.get_fields_names_by_type(ChainedModelChoiceField)
+        chained_fields_names = self.get_fields_names_by_type(
+            ChainedChoiceField)
+        chained_model_fields_names = self.get_fields_names_by_type(
+            ChainedModelChoiceField)
 
         oldest_parent_field_names = []
         for field_name in self.get_parent_fields_names():
@@ -175,8 +195,10 @@ class ChainedChoicesMixin(object):
 
     def get_youngest_children_field_names(self):
         result = []
-        chained_fields_names = self.get_fields_names_by_type(ChainedChoiceField)
-        chained_model_fields_names = self.get_fields_names_by_type(ChainedModelChoiceField)
+        chained_fields_names = self.get_fields_names_by_type(
+            ChainedChoiceField)
+        chained_model_fields_names = self.get_fields_names_by_type(
+            ChainedModelChoiceField)
 
         for field_name in chained_fields_names + chained_model_fields_names:
             if field_name not in self.get_parent_fields_names():
@@ -187,11 +209,13 @@ class ChainedChoicesMixin(object):
         field = self.fields[attr_name]
         if hasattr(instance, attr_name):
             attribute = getattr(instance, attr_name)
-            attr_value = getattr(attribute, 'pk', smart_str(attribute)) if attribute else None
+            attr_value = getattr(attribute, 'pk',
+                                 smart_str(attribute)) if attribute else None
             setattr(self, '%s' % attr_name, attr_value)
 
             if hasattr(field, 'parent_field'):
-                parent_instance = attribute if isinstance(attribute, models.Model) else instance
+                parent_instance = attribute if isinstance(
+                    attribute, models.Model) else instance
                 self.find_instance_attr(parent_instance, field.parent_field)
 
 
@@ -202,11 +226,13 @@ class ChainedChoicesForm(forms.Form, ChainedChoicesMixin):
     then the options will be loaded when the form is built.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, language_code=None, *args, **kwargs):
         if kwargs.get('user'):
-            self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
+            self.user = kwargs.pop(
+                'user'
+            )  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
         super(ChainedChoicesForm, self).__init__(*args, **kwargs)
-        self.language_code = kwargs.get('language_code', None)
+        self.language_code = language_code
         self.init_chained_choices(*args, **kwargs)
 
     def is_valid(self):
@@ -227,7 +253,9 @@ class ChainedChoicesModelForm(forms.ModelForm, ChainedChoicesMixin):
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('user'):
-            self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
+            self.user = kwargs.pop(
+                'user'
+            )  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
         super(ChainedChoicesModelForm, self).__init__(*args, **kwargs)
         self.language_code = kwargs.get('language_code', None)
         self.init_chained_choices(*args, **kwargs)
