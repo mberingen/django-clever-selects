@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import CarBrand, BrandModel, Car
+from cars.models import CarBrand, BrandModel, Car
 
 
 class ModelInlineAdmin(admin.TabularInline):

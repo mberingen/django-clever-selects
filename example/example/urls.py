@@ -1,33 +1,22 @@
-from django.conf.urls import patterns, include, url
+"""example URL Configuration
 
-# Uncomment the next two lines to enable the admin:
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
 from django.contrib import admin
-admin.autodiscover()
+from django.urls import include, path
 
-from views import HomeView, SimpleChainView, MultipleChainView, ModelChainView, EditCarView, DeleteCarView, \
-    AjaxChainedNames, AjaxChainedCountries, AjaxChainedCities, AjaxChainedModels, AjaxChainedColors
-
-urlpatterns = patterns('',
-    # Examples:
-    url(r'^ajax/chained-names/$', AjaxChainedNames.as_view(), name='ajax_chained_names'),
-    url(r'^ajax/chained-countries/$', AjaxChainedCountries.as_view(), name='ajax_chained_countries'),
-    url(r'^ajax/chained-cities/$', AjaxChainedCities.as_view(), name='ajax_chained_cities'),
-    url(r'^ajax/chained-brand-models/$', AjaxChainedModels.as_view(), name='ajax_chained_models'),
-    url(r'^ajax/chained-colors/$', AjaxChainedColors.as_view(), name='ajax_chained_colors'),
-
-    url(r'^simple-chain/$', SimpleChainView.as_view(), name='simple_chain'),
-    url(r'^multiple-chain/$', MultipleChainView.as_view(), name='multiple_chain'),
-    url(r'^model-chain/$', ModelChainView.as_view(), name='model_chain'),
-    url(r'^edit-car/(?P<pk>[-\d]+)/$', EditCarView.as_view(), name='edit_car'),
-    url(r'^delete-car/(?P<pk>[-\d]+)/$', DeleteCarView.as_view(), name='delete_car'),
-
-    url(r'^$', HomeView.as_view(), name='home'),
-
-    # url(r'^example/', include('example.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
-)
+urlpatterns = [
+    path('', include('cars.urls')),
+    path('admin/', admin.site.urls),
+]

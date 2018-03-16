@@ -1,16 +1,17 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
-from django.utils.encoding import smart_unicode
-from django.utils.translation import ugettext_lazy as _, ugettext
-from django.views.generic import FormView, TemplateView, CreateView, UpdateView, View
+from django.urls import reverse
+from django.utils.encoding import smart_text
+from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic import (CreateView, FormView, TemplateView,
+                                  UpdateView, View)
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import DeletionMixin
 
 from clever_selects.views import ChainedSelectChoicesView
-
-from forms import SimpleChainForm, MultipleChainForm, ModelChainForm
-from helpers import NAMES, COUNTRIES, CITIES
-from models import BrandModel, Car
+from cars.forms import ModelChainForm, MultipleChainForm, SimpleChainForm
+from cars.helpers import CITIES, COUNTRIES, NAMES
+from cars.models import BrandModel, Car
 
 
 class HomeView(TemplateView):
@@ -19,7 +20,8 @@ class HomeView(TemplateView):
 
 class ExampleFormViewMixin(object):
     def get_context_data(self, **kwargs):
-        context_data = super(ExampleFormViewMixin, self).get_context_data(**kwargs)
+        context_data = super(ExampleFormViewMixin,
+                             self).get_context_data(**kwargs)
         context_data['title'] = self.title
         try:
             context_data['message'] = self.request.session.get('message')
@@ -32,8 +34,9 @@ class ExampleFormViewMixin(object):
         return reverse(self.success_url)
 
     def form_valid(self, form):
-        self.request.session['message'] = _(u'Form is valid! Submitted data: %s') % smart_unicode(
-            form.cleaned_data, errors='replace')
+        self.request.session['message'] = _(
+            u'Form is valid! Submitted data: %s') % smart_text(
+                form.cleaned_data, errors='replace')
         return super(ExampleFormViewMixin, self).form_valid(form)
 
     def form_invalid(self, form):

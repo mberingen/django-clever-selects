@@ -18,7 +18,7 @@ class CarBrand(models.Model):
 
 
 class BrandModel(models.Model):
-    brand = models.ForeignKey(CarBrand, verbose_name=_(u'car brand'))
+    brand = models.ForeignKey(CarBrand, verbose_name=_(u'car brand'), on_delete=models.CASCADE)
     title = models.CharField(_(u'title'), max_length=128)
     created = models.DateTimeField(_(u'created'), auto_now_add=True)
     modified = models.DateTimeField(_(u'modified'), auto_now=True)
@@ -50,7 +50,8 @@ class Car(models.Model):
         ('PINK', _(u'pink'))
     ]
 
-    model = models.ForeignKey(BrandModel, verbose_name=_(u'car brand model'))
+    model = models.ForeignKey(
+        BrandModel, verbose_name=_(u'car brand model'), on_delete=models.CASCADE)
     engine = models.CharField(choices=ENGINES, max_length=8)
     color = models.CharField(choices=COLORS, max_length=8, blank=True, null=True, default=None)
     numberplate = models.CharField(max_length=16, unique=True)
