@@ -3,10 +3,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from cars.views import (AjaxChainedCities, AjaxChainedColors,
-                           AjaxChainedCountries, AjaxChainedModels,
-                           AjaxChainedNames, DeleteCarView, EditCarView,
-                           HomeView, ModelChainView, MultipleChainView,
-                           SimpleChainView)
+                        AjaxChainedCountries, AjaxChainedModels,
+                        AjaxChainedNames, DeleteCarView, EditCarView,
+                        HomeView, ModelChainView, MultipleChainView,
+                        SimpleChainView)
 
 admin.autodiscover()
 
