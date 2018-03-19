@@ -12,12 +12,12 @@ improved existing instance data initialization and new ``ChainedModelChoiceField
 is able pass ``request.user`` variable into AJAX view if user is logged in. It is very useful if you need to filter result queryset by
 user permissions for example.
 
-Tested on Django 1.4.5.
+Tested on Django >= 2.0.
 
 
 Requirements
 ------------
-- Django
+- Django >= 2.0
 
 - jQuery
 
