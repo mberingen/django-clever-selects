@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class CarBrand(models.Model):
@@ -7,7 +7,7 @@ class CarBrand(models.Model):
     created = models.DateTimeField(_(u'created'), auto_now_add=True)
     modified = models.DateTimeField(_(u'modified'), auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -23,7 +23,7 @@ class BrandModel(models.Model):
     created = models.DateTimeField(_(u'created'), auto_now_add=True)
     modified = models.DateTimeField(_(u'modified'), auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -58,11 +58,8 @@ class Car(models.Model):
     created = models.DateTimeField(_(u'created'), auto_now_add=True)
     modified = models.DateTimeField(_(u'modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u'%(brand)s %(model)s' % {
-            'brand': self.brand,
-            'model': self.model,
-        }
+    def __str__(self):
+        return f"{self.brand} {self.model}"
 
     @property
     def brand(self):

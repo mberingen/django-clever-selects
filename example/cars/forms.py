@@ -1,6 +1,6 @@
 from django.forms import ChoiceField, ModelChoiceField
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from clever_selects.form_fields import (ChainedChoiceField,
                                         ChainedModelChoiceField)

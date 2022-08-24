@@ -1,8 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import (CreateView, FormView, TemplateView,
                                   UpdateView, View)
 from django.views.generic.detail import SingleObjectMixin
@@ -35,7 +35,7 @@ class ExampleFormViewMixin(object):
 
     def form_valid(self, form):
         self.request.session['message'] = _(
-            u'Form is valid! Submitted data: %s') % smart_text(
+            'Form is valid! Submitted data: %s') % smart_str(
                 form.cleaned_data, errors='replace')
         return super(ExampleFormViewMixin, self).form_valid(form)
 
@@ -147,7 +147,7 @@ class AjaxChainedColors(ChainedSelectChoicesView):
                     ('SILVER', ugettext(u'silver')),
                 ]
             for color in Car.COLORS:
-                choices.append((color[0], ugettext(color[1])))
+                choices.append((color[0], gettext(color[1])))
             return choices
         except (ObjectDoesNotExist, KeyError):
             return []
