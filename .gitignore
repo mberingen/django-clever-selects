@@ -35,3 +35,4 @@ pip-log.txt
 .project
 .pydevproject
 example/Pipfile.lock
+example/poetry.lock
