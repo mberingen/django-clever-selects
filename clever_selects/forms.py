@@ -59,7 +59,7 @@ class ChainedChoicesMixin(object):
             for oldest_parent_field_name in oldest_parent_field_names:
                 try:
                     self.fields[oldest_parent_field_name].initial = getattr(
-                        self, '%s' % oldest_parent_field_name)
+                        self, f"{oldest_parent_field_name}")
                 except AttributeError:
                     pass
 
@@ -84,19 +84,19 @@ class ChainedChoicesMixin(object):
                         field_value = kwargs.get(field_name, None)
                     else:
                         parent_value = kwargs.get(
-                            '%s-%s' % (self.prefix, field.parent_field), None)
-                        field_value = kwargs.get('%s-%s' % (self.prefix,
-                                                            field_name), None)
+                            f"{self.prefix}-{field.parent_field}", None)
+                        field_value = kwargs.get(
+                            f"{self.prefix}-{field_name}", None)
                 else:
                     parent_value = self.initial.get(field.parent_field, None)
                     field_value = self.initial.get(field_name, None)
 
                     if parent_value is None:
-                        parent_value = getattr(self, '%s' % field.parent_field,
-                                               None)
+                        parent_value = getattr(
+                            self, f"{field.parent_field}", None)
 
                     if field_value is None:
-                        field_value = getattr(self, '%s' % field_name, None)
+                        field_value = getattr(self, f"{field_name}", None)
 
                 field.choices = [('', field.empty_label)]
 
@@ -211,7 +211,7 @@ class ChainedChoicesMixin(object):
             attribute = getattr(instance, attr_name)
             attr_value = getattr(attribute, 'pk',
                                  smart_str(attribute)) if attribute else None
-            setattr(self, '%s' % attr_name, attr_value)
+            setattr(self, f"{attr_name}", attr_value)
 
             if hasattr(field, 'parent_field'):
                 parent_instance = attribute if isinstance(

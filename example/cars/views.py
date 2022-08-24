@@ -48,21 +48,21 @@ class SimpleChainView(ExampleFormViewMixin, FormView):
     form_class = SimpleChainForm
     template_name = 'form.html'
     success_url = 'simple_chain'
-    title = _(u'Simple chain')
+    title = _('Simple chain')
 
 
 class MultipleChainView(ExampleFormViewMixin, FormView):
     form_class = MultipleChainForm
     template_name = 'form.html'
     success_url = 'multiple_chain'
-    title = _(u'Multiple chain')
+    title = _('Multiple chain')
 
 
 class ModelChainView(ExampleFormViewMixin, CreateView):
     form_class = ModelChainForm
     template_name = 'cars.html'
     success_url = 'model_chain'
-    title = _(u'Model chain')
+    title = _('Model chain')
 
     def get_context_data(self, **kwargs):
         context_data = super(ModelChainView, self).get_context_data(**kwargs)
@@ -77,7 +77,7 @@ class EditCarView(ExampleFormViewMixin, UpdateView):
     form_class = ModelChainForm
     template_name = 'form.html'
     success_url = 'model_chain'
-    title = _(u'Update car')
+    title = _('Update car')
     model = Car
 
 
@@ -140,11 +140,11 @@ class AjaxChainedColors(ChainedSelectChoicesView):
             model = BrandModel.objects.get(pk=self.parent_value)
             if 'Sportback' in model.title or 'Cabrio' in model.title or 'Coupe' in model.title:
                 return [
-                    ('RED', ugettext(u'red')),
-                    ('WHITE', ugettext(u'white')),
-                    ('BLACK', ugettext(u'black')),
-                    ('YELLOW', ugettext(u'yellow')),
-                    ('SILVER', ugettext(u'silver')),
+                    ('RED', gettext('red')),
+                    ('WHITE', gettext('white')),
+                    ('BLACK', gettext('black')),
+                    ('YELLOW', gettext('yellow')),
+                    ('SILVER', gettext('silver')),
                 ]
             for color in Car.COLORS:
                 choices.append((color[0], gettext(color[1])))

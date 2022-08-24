@@ -10,7 +10,7 @@ from cars.models import BrandModel, Car, CarBrand
 
 
 class SimpleChainForm(ChainedChoicesForm):
-    gender = ChoiceField(choices=[('', _(u'Select a gender'))] + list(GENDER))
+    gender = ChoiceField(choices=[('', _('Select a gender'))] + list(GENDER))
     name = ChainedChoiceField(
         parent_field='gender',
         ajax_url=reverse_lazy('ajax_chained_names'),
@@ -19,7 +19,7 @@ class SimpleChainForm(ChainedChoicesForm):
 
 class MultipleChainForm(ChainedChoicesForm):
     continent = ChoiceField(
-        choices=[('', _(u'Select a continent'))] + list(CONTINENTS))
+        choices=[('', _('Select a continent'))] + list(CONTINENTS))
     country = ChainedChoiceField(
         parent_field='continent',
         ajax_url=reverse_lazy('ajax_chained_countries'))
@@ -31,11 +31,11 @@ class ModelChainForm(ChainedChoicesModelForm):
     brand = ModelChoiceField(
         queryset=CarBrand.objects.all(),
         required=True,
-        empty_label=_(u'Select a car brand'))
+        empty_label=_('Select a car brand'))
     model = ChainedModelChoiceField(
         parent_field='brand',
         ajax_url=reverse_lazy('ajax_chained_models'),
-        empty_label=_(u'Select a car model'),
+        empty_label=_('Select a car model'),
         model=BrandModel,
         required=True)
     engine = ChoiceField(
@@ -43,7 +43,7 @@ class ModelChainForm(ChainedChoicesModelForm):
     color = ChainedChoiceField(
         parent_field='model',
         ajax_url=reverse_lazy('ajax_chained_colors'),
-        empty_label=_(u'Select a car model'),
+        empty_label=_('Select a car model'),
         required=False)
 
     class Meta:
