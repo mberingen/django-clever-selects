@@ -40,7 +40,7 @@ class ExampleFormViewMixin(object):
         return super(ExampleFormViewMixin, self).form_valid(form)
 
     def form_invalid(self, form):
-        self.message = _(u'Form is invalid!')
+        self.message = _('Form is invalid!')
         return super(ExampleFormViewMixin, self).form_invalid(form)
 
 

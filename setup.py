@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 from setuptools import setup
 
+from clever_selects import VERSION
 
 setup(
     name='django-clever-selects',
-    version='0.8.4',
+    version=VERSION,
     description='Chained select box widget for Django framework using AJAX requests.',
     long_description=open('README.rst').read(),
     author='Pragmatic Mates',
@@ -17,18 +18,16 @@ setup(
         'clever_selects.templatetags'
     ],
     include_package_data=True,
-    install_requires=('django>=3.1',),
+    install_requires=('django>=3',),
     classifiers=[
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Operating System :: OS Independent',
+	    'Operating System :: OS Independent',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'Framework :: Django',
         'License :: OSI Approved :: BSD License',
-        'Development Status :: 3 - Alpha'
+        'Development Status :: 5 - Production/Stable'
     ],
     license='BSD License',
-    keywords="django clever chained selects",
+    keywords="django clever chained selects ajax",
 )
