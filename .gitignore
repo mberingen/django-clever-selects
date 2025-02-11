@@ -1,6 +1,7 @@
 *.py[co]
 .DS_Store
 .sass-cache
+.mypy_cache
 
 # Packages
 *.egg
