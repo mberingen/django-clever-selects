@@ -37,3 +37,6 @@ pip-log.txt
 .pydevproject
 example/Pipfile.lock
 example/poetry.lock
+.python-version
+*.sublime-project
+*.sublime-workspace
