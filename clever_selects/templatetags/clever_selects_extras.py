@@ -2,13 +2,17 @@ import logging
 
 from django import template
 from django.middleware.csrf import get_token
-from django.conf import settings
-from django.core.files.storage import storages
 from django.utils.safestring import mark_safe
+from django.conf import settings
 
 from clever_selects import VERSION
 
-staticfiles_storage = storages["staticfiles"]
+try:
+    from django.core.files.storage import storages
+    staticfiles_storage = storages["staticfiles"]
+except ImportError:
+    from django.core.files.storage import get_storage_class
+    staticfiles_storage = get_storage_class(settings.STATICFILES_STORAGE)()
 
 register = template.Library()
 
