@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-clever-selects"
-version = "0.1.0"
+version = "1.1.1"
 description = ""
 authors = ["Marc Beringen <mberingen@gmail.com>"]
 
